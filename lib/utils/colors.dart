@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+
+const whitecolor = Color(0xffffffff);
+const blackcolor = Color(0xff000000);
+const primary = Color(0xff258085);
+const textgrey = Color(0xff9F9F9F);
+const linegrey = Color(0xffBDBDBD);
+const transparent = Colors.transparent;
+const textgreen = Color(0xff0B2528);
+const red = Color(0xffFF0000);
+const lightgreen = Color(0xff2F999D);
+const lightwhite = Color(0xffF5F5F5);
+const shadowcolor = Color.fromARGB(255, 226, 225, 225);
+var shadow = const Color.fromARGB(255, 237, 233, 233);
+const otpgrey = Color(0xff757575);
+const pink = Color(0xffFFEDE9);
+const yellow = Color(0xffF2DF34);
+const grey = Color(0xff5B5B5B);
+const extralightgrey = Color(0xffEFEFEF);
+const offwhite = Color(0xffF5F5F5);
+const green = Color(0xff0FA958);
+const textfeildcolor = Color(0xffF2F2F2);
