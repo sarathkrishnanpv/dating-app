@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:datingapp/screens/editprofile/editpersonaldetails.dart';
 import 'package:datingapp/service/apicalls.dart';
 import 'package:datingapp/utils/colors.dart';
 import 'package:datingapp/utils/controller.dart';
@@ -77,14 +78,20 @@ class _ProfileViewState extends State<ProfileView> {
                     color: blackcolor),
               ),
               const Oneh(),
-              const Center(child: Editdetails()),
+              Center(
+                  child: GestureDetector(
+                      onTap: () {
+                        Get.to(() => const EditPersonaldeatils());
+                      },
+                      child: const Editdetails())),
               const Twoh(),
               const Heading14font600(
                   heading: "Interested People ", color: blackcolor),
               const Twoh(),
               Obx(() => dataloading.value
                   ? const ShimmerLoading()
-                  : intrestedlist['interested_profiles'].isEmpty
+                  : intrestedlist.isEmpty ||
+                          intrestedlist['interested_profiles'].isEmpty
                       ? SizedBox(
                           height: height * .3,
                           child: const Center(
@@ -99,7 +106,7 @@ class _ProfileViewState extends State<ProfileView> {
                               intrestedlist['interested_profiles'].length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            var data = intrestedlist['interested_profiles'];
+                            // var data = intrestedlist['interested_profiles'];
                             return SlideInLeft(
                               from: index * 10 + 33,
                               duration: Duration(milliseconds: index * 200),
@@ -110,9 +117,12 @@ class _ProfileViewState extends State<ProfileView> {
                                     SlidableAction(
                                       onPressed: (context) {
                                         setState(() {
-                                          markintrest(
-                                              data[index]['id'].toString());
-                                          data.removeAt(index);
+                                          markintrest(intrestedlist[
+                                                      'interested_profiles']
+                                                  [index]['id']
+                                              .toString());
+                                          intrestedlist['interested_profiles']
+                                              .removeAt(index);
                                         });
                                       },
                                       backgroundColor: Colors.red,
@@ -122,10 +132,14 @@ class _ProfileViewState extends State<ProfileView> {
                                     ),
                                   ],
                                 ),
-                                key: ValueKey(data[index]),
+                                key: ValueKey(
+                                    intrestedlist['interested_profiles']
+                                        [index]),
                                 child: IntrestedList(
                                   index: index,
-                                  intrestdata: data[index],
+                                  intrestdata:
+                                      intrestedlist['interested_profiles']
+                                          [index],
                                 ),
                               ),
                             );

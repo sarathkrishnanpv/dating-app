@@ -7,16 +7,15 @@ import 'package:datingapp/utils/textfeild.dart';
 import 'package:datingapp/widget/buttons/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 
-class WorkDetails extends StatefulWidget {
-  const WorkDetails({super.key});
+class EditWorkDetails extends StatefulWidget {
+  const EditWorkDetails({super.key});
 
   @override
-  State<WorkDetails> createState() => _WorkDetailsState();
+  State<EditWorkDetails> createState() => _EditWorkDetailsState();
 }
 
-class _WorkDetailsState extends State<WorkDetails> {
+class _EditWorkDetailsState extends State<EditWorkDetails> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -129,7 +128,7 @@ class _WorkDetailsState extends State<WorkDetails> {
                           jobrolecontroller.text.toString(),
                           educationselected.value.toString(),
                           collegenamecontroller.text.toString(),
-                          false);
+                          true);
                     }
                   },
                   buttontitle: "Continue"),

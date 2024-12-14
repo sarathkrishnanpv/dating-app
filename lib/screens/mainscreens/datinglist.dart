@@ -78,6 +78,7 @@ class _DatingListState extends State<DatingList> {
                       GestureDetector(
                         onTap: () {
                           datingindex.value = 0;
+                          fetchProfiles(1);
                         },
                         child: SlideInLeft(
                           from: 10,

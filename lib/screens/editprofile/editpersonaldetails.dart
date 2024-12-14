@@ -13,14 +13,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
-class Personaldeatils extends StatefulWidget {
-  const Personaldeatils({super.key});
+class EditPersonaldeatils extends StatefulWidget {
+  const EditPersonaldeatils({super.key});
 
   @override
-  State<Personaldeatils> createState() => _PersonaldeatilsState();
+  State<EditPersonaldeatils> createState() => _EditPersonaldeatilsState();
 }
 
-class _PersonaldeatilsState extends State<Personaldeatils> {
+class _EditPersonaldeatilsState extends State<EditPersonaldeatils> {
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   @override
@@ -374,7 +374,7 @@ class _PersonaldeatilsState extends State<Personaldeatils> {
                               preferdname: preferednamecontroller.text.trim(),
                               region: selectedRegion!.value,
                               weight: weightcontroller.text.trim(),
-                              isfromeditpage: false);
+                              isfromeditpage: true);
                         }
                       }
                     },

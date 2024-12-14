@@ -9,14 +9,14 @@ import 'package:datingapp/widget/buttons/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Familydetails extends StatefulWidget {
-  const Familydetails({super.key});
+class EditFamilydetails extends StatefulWidget {
+  const EditFamilydetails({super.key});
 
   @override
-  State<Familydetails> createState() => _FamilydetailsState();
+  State<EditFamilydetails> createState() => _EditFamilydetailsState();
 }
 
-class _FamilydetailsState extends State<Familydetails> {
+class _EditFamilydetailsState extends State<EditFamilydetails> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -181,7 +181,7 @@ class _FamilydetailsState extends State<Familydetails> {
                             languagecontroller.text.toString(),
                             drinkinghabit!.value.toString(),
                             smokinghabit!.value.toString(),
-                            false);
+                            true);
                       }
                     }
                   },
