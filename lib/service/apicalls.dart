@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:datingapp/screens/editprofile/editfamilydetails.dart';
+import 'package:datingapp/screens/editprofile/editworkdetails.dart';
 import 'package:datingapp/screens/hometab/hometab.dart';
 import 'package:datingapp/screens/register/familydetails.dart';
 import 'package:datingapp/screens/register/postprofile.dart';
@@ -10,8 +12,8 @@ import 'package:datingapp/utils/ecom-widget/toast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-Future<void> postwrkandeducationtosever(
-    String jobrole, String educationlevel, String collegename) async {
+Future<void> postwrkandeducationtosever(String jobrole, String educationlevel,
+    String collegename, bool isfromeditpage) async {
   const String apiUrl = postworkandeducationurl;
   buttonloading.value = true;
   final Map<String, dynamic> data = {
@@ -31,7 +33,12 @@ Future<void> postwrkandeducationtosever(
 
   if (response.statusCode == 200 || response.statusCode == 201) {
     // var responseData = json.decode(response.body);
-    Get.to(() => const Postprofile());
+    if (isfromeditpage == true) {
+      sucessToast("Profile Saved!");
+      Get.to(() => const Hometab());
+    } else {
+      Get.to(() => const Postprofile());
+    }
   } else {
     var responseData = json.decode(response.body);
     errortoastmsg(responseData['messages'][0]['message']);
@@ -39,20 +46,20 @@ Future<void> postwrkandeducationtosever(
   buttonloading.value = false;
 }
 
-Future<void> uploadProfileAndDetails({
-  required File profileImage,
-  required List<File> addonImages,
-  required String name,
-  required String preferdname,
-  required String sex,
-  required String region,
-  required String age,
-  required String height,
-  required String weight,
-  required String maritialstatus,
-  required String intrest,
-  required String bio,
-}) async {
+Future<void> uploadProfileAndDetails(
+    {required File profileImage,
+    required List<File> addonImages,
+    required String name,
+    required String preferdname,
+    required String sex,
+    required String region,
+    required String age,
+    required String height,
+    required String weight,
+    required String maritialstatus,
+    required String intrest,
+    required String bio,
+    required bool isfromeditpage}) async {
   const String apiUrl = postprofiledatatoserver;
   buttonloading.value = true;
 
@@ -93,10 +100,14 @@ Future<void> uploadProfileAndDetails({
     // Send the request
     var response = await request.send();
     var responseData = await http.Response.fromStream(response);
-    print("Response: ${responseData.body}");
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       // var responseData = await http.Response.fromStream(response);
-      Get.to(() => const Familydetails());
+      if (isfromeditpage == true) {
+        Get.to(() => const EditFamilydetails());
+      } else {
+        Get.to(() => const Familydetails());
+      }
     } else {
       var responseData = await http.Response.fromStream(response);
       var jsonResponse = json.decode(responseData.body);
@@ -117,6 +128,7 @@ Future<void> postPersonalDetailsToServer(
   String motherTongue,
   String drinkingHabit,
   String smokinghabit,
+  bool isfromeditpage,
 ) async {
   const String apiUrl = personaldetailsurl;
   buttonloading.value = true;
@@ -143,7 +155,11 @@ Future<void> postPersonalDetailsToServer(
 
     // Handle the response
     if (response.statusCode == 200 || response.statusCode == 201) {
-      Get.to(() => const WorkDetails());
+      if (isfromeditpage == true) {
+        Get.to(() => const EditWorkDetails());
+      } else {
+        Get.to(() => const WorkDetails());
+      }
     } else {
       var responseData = json.decode(response.body);
       errortoastmsg(responseData['messages'][0]['message']);
@@ -162,7 +178,7 @@ bool hasNextPage = true;
 int currentPage = 1;
 
 Future<void> fetchProfiles(int page) async {
-  if (isLoading || !hasNextPage) return;
+  // if (isLoading || !hasNextPage) return;
   dataloading.value = true;
   isLoading = true; // Set loading state
 
@@ -306,7 +322,7 @@ Future<void> markintrest(
 
 Future<void> filterProfile(int page, String gender, String minage,
     String maxage, String place, List intrest) async {
-  if (isLoading || !hasNextPage) return;
+  // if (isLoading || !hasNextPage) return;
   dataloading.value = true;
   isLoading = true; // Set loading state
 
@@ -323,7 +339,7 @@ Future<void> filterProfile(int page, String gender, String minage,
         "min_age": minage,
         "max_age": maxage,
         "place": place,
-        "interests": intrest,
+        // "interests": intrest,
       }),
     );
 
