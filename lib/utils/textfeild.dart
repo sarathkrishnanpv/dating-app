@@ -193,27 +193,62 @@ class _CustomTextfeildState extends State<CustomTextfeild> {
 }
 
 class ChatTextFeild extends StatefulWidget {
-  const ChatTextFeild(
-      {super.key, required this.hint, required this.controller});
-
   final String hint;
   final TextEditingController controller;
+  final void Function(String)? onSubmitted;
+  final bool isMultiline;
+  final int? maxLines;
+
+  const ChatTextFeild({
+    super.key,
+    required this.hint,
+    required this.controller,
+    this.onSubmitted,
+    this.isMultiline = false,
+    this.maxLines,
+  });
 
   @override
   State<ChatTextFeild> createState() => _ChatTextFeildState();
 }
 
 class _ChatTextFeildState extends State<ChatTextFeild> {
+  late FocusNode _focusNode;
+  bool _isFocused = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    _focusNode.addListener(() {
+      setState(() {
+        _isFocused = _focusNode.hasFocus;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      //height: height * .06,
-      //width: width * .9,
       child: TextField(
+        focusNode: _focusNode,
         cursorColor: blackcolor,
         controller: widget.controller,
+        maxLines: widget.isMultiline ? (widget.maxLines ?? 4) : 1,
+        keyboardType:
+            widget.isMultiline ? TextInputType.multiline : TextInputType.text,
+        textInputAction: widget.onSubmitted != null
+            ? TextInputAction.send
+            : TextInputAction.done,
+        onSubmitted: widget.onSubmitted,
         decoration: InputDecoration(
-          fillColor: transparent,
+          fillColor: _isFocused ? Colors.white : transparent,
           filled: true,
           hintText: widget.hint,
           contentPadding: const EdgeInsets.only(left: 12, top: 8, bottom: 8),
@@ -239,7 +274,6 @@ class _ChatTextFeildState extends State<ChatTextFeild> {
           fontWeight: FontWeight.w400,
           color: blackcolor,
         ),
-        // maxLines: maxLines,
       ),
     );
   }
