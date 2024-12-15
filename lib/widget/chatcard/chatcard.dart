@@ -15,7 +15,11 @@ class ChatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => const ChatScreen());
+        Get.to(() => const ChatScreen(
+              chatPartnerId: '1', // replace needed with actual data
+              chatPartnerName: "hey",
+              chatPartnerProfilePic: "jiji",
+            ));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -56,6 +60,7 @@ class IntrestedList extends StatelessWidget {
   final Map<String, dynamic> intrestdata;
   @override
   Widget build(BuildContext context) {
+    print(intrestdata.toString());
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7.0),
       child: Row(
@@ -78,7 +83,14 @@ class IntrestedList extends StatelessWidget {
           const Spacer(),
           GestureDetector(
               onTap: () {
-                Get.to(() => const ChatScreen());
+                print(intrestdata["id"]);
+                print(intrestdata["name"]);
+                print(intrestdata["profile_picture"]);
+                Get.to(() => ChatScreen(
+                    chatPartnerId:
+                        intrestdata["id"].toString(), // Use the actual user ID
+                    chatPartnerName: intrestdata["name"],
+                    chatPartnerProfilePic: intrestdata["profile_picture"]));
               },
               child: const ChatBox())
         ],
