@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:datingapp/service/apicalls.dart';
 import 'package:datingapp/utils/colors.dart';
 import 'package:datingapp/utils/images.dart';
 import 'package:datingapp/utils/reusedtext.dart';
@@ -6,43 +8,94 @@ import 'package:datingapp/utils/textfeild.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../utils/controller.dart';
+
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+  final String chatPartnerId;
+  final String chatPartnerName;
+  final String chatPartnerProfilePic;
+
+  const ChatScreen(
+      {super.key,
+      required this.chatPartnerId,
+      required this.chatPartnerName,
+      required this.chatPartnerProfilePic});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final List<Message> messages = [
-    Message(text: "Hi there!", isMe: false),
-    Message(text: "Hello! How are you?", isMe: true),
-    Message(text: "I'm good, thanks! What about you?", isMe: false),
-    Message(text: "Doing great, working on a project!", isMe: true),
-  ];
-  final TextEditingController _messagecontroller = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  String get _currentUserId => myprofiledata['id'].toString() ?? "1";
+
+  // Generate a unique chat room ID
+  String _getChatRoomId(String userId1, String userId2) {
+    return userId1.compareTo(userId2) > 0
+        ? '$userId1-$userId2'
+        : '$userId2-$userId1';
+  }
+
+  void _sendMessage() async {
+    final String messageText = _messageController.text.trim();
+    if (messageText.isEmpty) return;
+
+    try {
+      // Create a reference to the chat room
+      final chatRoomId = _getChatRoomId(_currentUserId, widget.chatPartnerId);
+
+      // Create a new message document
+      await _firestore
+          .collection('chat_rooms')
+          .doc(chatRoomId)
+          .collection('messages')
+          .add({
+        'senderId': _currentUserId,
+        'receiverId': widget.chatPartnerId,
+        'text': messageText,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      // Clear the text field after sending
+      _messageController.clear();
+    } catch (e) {
+      print('Error sending message: $e');
+      // TODO: Add error handling (e.g., show a toast)
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProfiles(1); // Keep your existing profile fetching logic
+  }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final horizontalPadding = EdgeInsets.symmetric(horizontal: width * .05);
+    final chatRoomId = _getChatRoomId(_currentUserId, widget.chatPartnerId);
+    print('id : ${widget.chatPartnerId}');
+    print('name : ${widget.chatPartnerName}');
+    print('pic : ${widget.chatPartnerProfilePic}');
     return Scaffold(
       backgroundColor: whitecolor,
       appBar: AppBar(
-        title: const Row(
+        title: Row(
           children: [
-            CircleAvatar(backgroundImage: AssetImage(dp)),
-            Twow(),
+            CircleAvatar(
+              backgroundImage: NetworkImage(widget.chatPartnerProfilePic),
+            ),
+            const Twow(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Heading14font600(
-                    heading: "Lawrence Kennedy", color: blackcolor),
+                    heading: widget.chatPartnerName, color: blackcolor),
                 Row(
-                  children: [
-                    Onlinedot(
-                      color: Colors.greenAccent,
-                    ),
+                  children: const [
+                    Onlinedot(color: Colors.greenAccent),
                     Twow(),
                     Heading11font500(heading: "User Active", color: blackcolor),
                   ],
@@ -56,30 +109,49 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: messages.length,
-              reverse: true,
-              itemBuilder: (context, index) {
-                final message = messages[index];
-                return Align(
-                  alignment: message.isMe
-                      ? Alignment.centerRight
-                      : Alignment.centerLeft,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: width * .03, vertical: 5),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: message.isMe ? primary : const Color(0xffd4f3f1),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Text(
-                      message.text,
-                      style: TextStyle(
-                        color: message.isMe ? Colors.white : Colors.black,
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _firestore
+                  .collection('chat_rooms')
+                  .doc(chatRoomId)
+                  .collection('messages')
+                  .orderBy('timestamp', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Center(child: Text('No messages yet'));
+                }
+
+                return ListView.builder(
+                  reverse: true,
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    final message = snapshot.data!.docs[index];
+                    final bool isMe = message['senderId'] == _currentUserId;
+
+                    return Align(
+                      alignment:
+                          isMe ? Alignment.centerRight : Alignment.centerLeft,
+                      child: Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: width * .03, vertical: 5),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: isMe ? primary : const Color(0xffd4f3f1),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Text(
+                          message['text'],
+                          style: TextStyle(
+                            color: isMe ? Colors.white : Colors.black,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 );
               },
             ),
@@ -94,10 +166,13 @@ class _ChatScreenState extends State<ChatScreen> {
                   const Twow(),
                   Expanded(
                       child: ChatTextFeild(
-                          hint: "Enter a message",
-                          controller: _messagecontroller)),
+                    hint: "Enter a message",
+                    controller: _messageController,
+                    onSubmitted: (_) => _sendMessage(),
+                  )),
                   const Twow(),
-                  SvgPicture.asset(send)
+                  GestureDetector(
+                      onTap: _sendMessage, child: SvgPicture.asset(send))
                 ],
               ),
             ),
@@ -106,11 +181,10 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
-}
 
-class Message {
-  final String text;
-  final bool isMe;
-
-  Message({required this.text, required this.isMe});
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
 }
