@@ -5,6 +5,7 @@ const personaldetailsurl = "$baseurl/api/personal-details-api";
 const submitprofile = "$baseurl/api/profile-sumbit-api";
 const intrestlisting = "$baseurl/api/interested-profile";
 const profilefilter = "$baseurl/api/profile-filter";
+const deleteimage = "$baseurl/api/delete-additional-image";
 
 const baseurl = "https://matrimonyproject.pythonanywhere.com";
 

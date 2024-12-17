@@ -60,7 +60,6 @@ class IntrestedList extends StatelessWidget {
   final Map<String, dynamic> intrestdata;
   @override
   Widget build(BuildContext context) {
-    print(intrestdata.toString());
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7.0),
       child: Row(

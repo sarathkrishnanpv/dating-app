@@ -3,6 +3,7 @@ import 'package:datingapp/screens/register/personaldeatils.dart';
 import 'package:datingapp/screens/register/workdetails.dart';
 import 'package:datingapp/service/apicalls.dart';
 import 'package:datingapp/utils/colors.dart';
+import 'package:datingapp/utils/controller.dart';
 import 'package:datingapp/utils/images.dart';
 import 'package:datingapp/utils/reusedtext.dart';
 import 'package:datingapp/utils/spacing.dart';
@@ -48,34 +49,34 @@ class Postprofile extends StatelessWidget {
                 ],
               ),
               const Twoh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "Name ",
-                body: "Vicky Zboncak",
+                body: namecontroller.text.toString(),
               ),
               const Oneh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "Sex",
-                body: "Male",
+                body: selectedsex!.value,
               ),
               const Oneh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "Age",
-                body: "25",
+                body: agecontroller.text.toString(),
               ),
               const Oneh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "Weight",
-                body: "60",
+                body: weightcontroller.text.toString(),
               ),
               const Oneh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "Height",
-                body: "170",
+                body: heightcontroller.text.toString(),
               ),
               const Oneh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "Marital Status",
-                body: "Single",
+                body: maritialstatusselected!.value,
               ),
               const Twoh(),
               Row(
@@ -95,29 +96,29 @@ class Postprofile extends StatelessWidget {
                 ],
               ),
               const Twoh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "Religion",
-                body: "Hindu",
+                body: religioncontroller.text.toString(),
               ),
               const Oneh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "Cast",
-                body: "Nair",
+                body: castcontroller.text.toString(),
               ),
               const Oneh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "Mother Tongue",
-                body: "Malayalam",
+                body: languagecontroller.text.toString(),
               ),
               const Oneh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "Drinking",
-                body: "Never",
+                body: drinkinghabit!.value,
               ),
               const Oneh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "Smoking",
-                body: "Never",
+                body: smokinghabit!.value,
               ),
               const Twoh(),
               Row(
@@ -137,19 +138,19 @@ class Postprofile extends StatelessWidget {
                 ],
               ),
               const Twoh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "Job Role",
-                body: "CA",
+                body: jobrolecontroller.text.toString(),
               ),
               const Oneh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "Education",
-                body: "MCA",
+                body: educationselected.value,
               ),
               const Oneh(),
-              const Profilepostdata(
+              Profilepostdata(
                 title: "College",
-                body: "CET TRIVANDRUM",
+                body: collegenamecontroller.text.toString(),
               ),
               const Fiveh(),
               const Fiveh(),

@@ -230,3 +230,21 @@ class Profilepostdata extends StatelessWidget {
     );
   }
 }
+
+class DefaultText extends StatelessWidget {
+  const DefaultText(
+      {super.key, required this.heading, required this.color, this.fontsize});
+  final String heading;
+  final Color color;
+  final double? fontsize;
+  @override
+  Widget build(BuildContext context) {
+    return Text(heading,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontFamily: 'Manrope',
+            fontSize: fontsize ?? 15,
+            color: color));
+  }
+}

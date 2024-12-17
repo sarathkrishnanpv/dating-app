@@ -273,13 +273,11 @@ fetchintrestedprofile() async {
         'Content-Type': 'application/json',
       },
     );
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
-
       intrestedlist.value = data;
       dataloading.value = false;
-      print("data fetched===>${intrestedlist.values}");
     } else {
       errortoastmsg("Failed to fetch profile");
       dataloading.value = false;
@@ -369,4 +367,33 @@ Future<void> filterProfile(int page, String gender, String minage,
   }
 
   // print(dataloading.value);
+}
+
+Future<void> deleteImage(
+  int imageId,
+) async {
+  final url = Uri.parse(deleteimage); // API endpoint
+
+  try {
+    final response = await http.delete(
+      url,
+      headers: {
+        'Authorization':
+            'Bearer $bearertoken', // Pass the bearer token if needed
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        "image_id": imageId, // Pass image_id in body
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print('Image deleted successfully: ${data['message']}');
+    } else {
+      print('Failed to delete image: ${response.statusCode} ${response.body}');
+    }
+  } catch (e) {
+    print('Error deleting image: $e');
+  }
 }

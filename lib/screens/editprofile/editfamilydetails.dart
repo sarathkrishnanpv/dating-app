@@ -18,6 +18,11 @@ class EditFamilydetails extends StatefulWidget {
 
 class _EditFamilydetailsState extends State<EditFamilydetails> {
   final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+    religioncontroller.text = myprofiledata['name'];
+  }
 
   @override
   Widget build(BuildContext context) {

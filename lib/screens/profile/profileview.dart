@@ -24,7 +24,6 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       fetchintrestedprofile();
     });
@@ -61,21 +60,14 @@ class _ProfileViewState extends State<ProfileView> {
                 )),
               ),
               const Twoh(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Heading16font700(
-                      heading: myprofiledata['name'], color: blackcolor),
-                  const Twow(),
-                  Heading12font600(
-                      heading: "${myprofiledata['age']} age",
-                      color: blackcolor),
-                ],
+              Center(
+                child: Heading16font700(
+                    heading: myprofiledata['name'], color: blackcolor),
               ),
-              const Center(
-                child: Heading11font500(
-                    heading: "Master Degree in Legal, Not Working",
-                    color: blackcolor),
+              const Twow(),
+              Center(
+                child: Heading12font600(
+                    heading: "${myprofiledata['age']} age", color: blackcolor),
               ),
               const Oneh(),
               Center(

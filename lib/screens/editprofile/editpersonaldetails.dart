@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:datingapp/service/apicalls.dart';
+import 'package:datingapp/service/apiurls.dart';
 import 'package:datingapp/utils/colors.dart';
 import 'package:datingapp/utils/controller.dart';
 import 'package:datingapp/utils/ecom-widget/toast.dart';
@@ -8,7 +10,6 @@ import 'package:datingapp/utils/reusedtext.dart';
 import 'package:datingapp/utils/spacing.dart';
 import 'package:datingapp/utils/textfeild.dart';
 import 'package:datingapp/widget/buttons/buttons.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,10 +25,26 @@ class _EditPersonaldeatilsState extends State<EditPersonaldeatils> {
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   @override
+  void initState() {
+    super.initState();
+    namecontroller.text = myprofiledata['name'];
+    preferednamecontroller.text = myprofiledata['preferred_name'];
+    agecontroller.text = myprofiledata['age'].toString();
+    heightcontroller.text = myprofiledata['height_cm'].toString();
+    weightcontroller.text = myprofiledata['weight_kg'].toString();
+    aboutcontroller.text = myprofiledata['about'];
+    selectedsex!.value = myprofiledata['sex'];
+    selectedRegion!.value = myprofiledata['region'];
+    maritialstatusselected!.value = myprofiledata['marital_status'];
+    intrestselected!.value = myprofiledata['interests'][0];
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final horizontalPadding = EdgeInsets.symmetric(horizontal: width * .05);
+
     return Form(
       key: _formKey,
       child: Scaffold(
@@ -39,6 +56,7 @@ class _EditPersonaldeatilsState extends State<EditPersonaldeatils> {
         body: Padding(
           padding: horizontalPadding,
           child: SingleChildScrollView(
+            clipBehavior: Clip.none,
             physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,95 +80,113 @@ class _EditPersonaldeatilsState extends State<EditPersonaldeatils> {
                 const Heading12font700(
                     heading: "Profile Picture", color: blackcolor),
                 const Oneh(),
-                DottedBorder(
-                  color: linegrey, // Color of the border
-                  strokeWidth: 1.2, // Thickness of the border
-                  dashPattern: const [6, 3], // Define the dash and gap length
-                  borderType: BorderType.RRect, // Rounded corners
-                  radius: const Radius.circular(12), // Corner radius
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: SizedBox(
                     width: width,
-                    height: height * .2,
-                    color: lightwhite,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(pick),
-                        const Oneh(),
-                        const Heading12font700(
-                            heading: "This image will set as your profile.",
-                            color: blackcolor),
-                        const Halfh(),
-                        const Heading10font500(
-                            heading: "Maximum size of the image is 5.MB",
-                            color: blackcolor),
-                        const Oneh(),
-                        MiniButton(
-                            onpressed: () {
-                              _pickDpImageFromGallery();
-                            },
-                            buttontitle: "Upload Image")
-                      ],
-                    ),
+                    height: height * .3,
+                    child: selectedImage != null
+                        ? Image.file(
+                            selectedImage!,
+                            width: 200,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          )
+                        : CachedNetworkImage(
+                            imageUrl: myprofiledata['profile_picture'],
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
                 const Oneh(),
-                imageName != null
-                    ? Wrap(
-                        spacing: 8.0, // Horizontal spacing between chips
-                        runSpacing:
-                            4.0, // Vertical spacing between rows of chips
-                        children: dpimage.map((label) {
-                          return Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SvgPicture.asset(galery),
-                              const Onew(),
-                              Heading12font600(
-                                  heading: imageName!, color: blackcolor),
-                            ],
-                          );
-                        }).toList(), // Map each label to a Chip
-                      )
-                    : const SizedBox(),
+                MiniButton(
+                    onpressed: () {
+                      _pickDpImageFromGallery();
+                    },
+                    buttontitle: "Upload Image"),
+                const Oneh(),
+                // imageName != null
+                //     ? Wrap(
+                //         spacing: 8.0, // Horizontal spacing between chips
+                //         runSpacing:
+                //             4.0, // Vertical spacing between rows of chips
+                //         children: dpimage.map((label) {
+                //           return Row(
+                //             mainAxisSize: MainAxisSize.min,
+                //             children: [
+                //               SvgPicture.asset(galery),
+                //               const Onew(),
+                //               Heading12font600(
+                //                   heading: imageName!, color: blackcolor),
+                //             ],
+                //           );
+                //         }).toList(), // Map each label to a Chip
+                //       )
+                //     : const SizedBox(),
                 const Oneh(),
                 const Heading12font700(heading: "Images", color: blackcolor),
                 const Oneh(),
-                DottedBorder(
-                  color: linegrey, // Color of the border
-                  strokeWidth: 1.2, // Thickness of the border
-                  dashPattern: const [6, 3], // Define the dash and gap length
-                  borderType: BorderType.RRect, // Rounded corners
-                  radius: const Radius.circular(12), // Corner radius
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    width: width,
-                    height: height * .22,
-                    color: lightwhite,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(pick),
-                        const Oneh(),
-                        const Heading12font700(
-                            heading:
-                                "These images will be shows in the profile\n(0/4)",
-                            color: blackcolor),
-                        const Halfh(),
-                        const Heading10font500(
-                            heading: "Maximum size of the image is 2.MB",
-                            color: blackcolor),
-                        const Oneh(),
-                        MiniButton(
-                            onpressed: () {
-                              _pickImages();
-                            },
-                            buttontitle: "Upload Image")
-                      ],
-                    ),
-                  ),
+                SizedBox(
+                  height: height * .12,
+                  child: ListView.builder(
+                      clipBehavior: Clip.none,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: myprofiledata['additional_images'].length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            alignment: Alignment.topRight,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: SizedBox(
+                                  width: width * .2,
+                                  height: height * .1,
+                                  child: CachedNetworkImage(
+                                    imageUrl: myprofiledata['additional_images']
+                                        [index]["image_url"],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: height * .09,
+                                right: -5,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    deleteImage(
+                                        myprofiledata['additional_images']
+                                            [index]["id"]);
+                                    setState(() {
+                                      myprofiledata['additional_images']
+                                          .removeAt(index);
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 25,
+                                    height: 22,
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle, color: red),
+                                    child: const Icon(
+                                      Icons.close,
+                                      color: whitecolor,
+                                      size: 15,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      }),
                 ),
+                MiniButton(
+                    onpressed: () {
+                      _pickImages();
+                    },
+                    buttontitle: "Upload Image"),
                 const Oneh(),
                 Wrap(
                   spacing: 8.0, // Horizontal space between items
@@ -378,7 +414,7 @@ class _EditPersonaldeatilsState extends State<EditPersonaldeatils> {
                         }
                       }
                     },
-                    buttontitle: "Continue "),
+                    buttontitle: "Save And Continue"),
                 const Fiveh(),
               ],
             ),
