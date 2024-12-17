@@ -21,7 +21,12 @@ class _EditFamilydetailsState extends State<EditFamilydetails> {
   @override
   void initState() {
     super.initState();
-    religioncontroller.text = myprofiledata['name'];
+    religioncontroller.text = personalprofilelist['relegion'];
+    castcontroller.text = personalprofilelist['cast'];
+    languagecontroller.text = personalprofilelist['mother_toungue'];
+    drinkinghabit!.value = personalprofilelist['drinking_habits'];
+    smokinghabit!.value = personalprofilelist['smoking_habits'];
+    selectedSubRegion!.value = personalprofilelist['sub_region'];
   }
 
   @override
@@ -79,27 +84,16 @@ class _EditFamilydetailsState extends State<EditFamilydetails> {
               const Heading12font700(
                   heading: "Choose Sub Region", color: blackcolor),
               const Oneh(),
-              Obx(() => selectedRegion!.value == "UK"
-                  ? SelectionDropDown(
-                      options: placesInUK,
-                      hint: "Select Your Sub Region",
-                      initialValue: selectedSubRegion!.value.isNotEmpty == true
-                          ? selectedSubRegion!.value
-                          : null,
-                      onChanged: (String value) {
-                        selectedSubRegion!.value = value;
-                      },
-                    )
-                  : SelectionDropDown(
-                      options: districtsInKerala,
-                      initialValue: selectedSubRegion!.value.isNotEmpty == true
-                          ? selectedSubRegion!.value
-                          : null,
-                      hint: "Select Your Sub Region",
-                      onChanged: (String value) {
-                        selectedSubRegion!.value = value;
-                      },
-                    )),
+              SelectionDropDown(
+                options: combinedplaces,
+                initialValue: selectedSubRegion!.value.isNotEmpty == true
+                    ? selectedSubRegion!.value
+                    : null,
+                hint: "Select Your Sub Region",
+                onChanged: (String value) {
+                  selectedSubRegion!.value = value;
+                },
+              ),
               const Oneh(),
               const Row(
                 children: [

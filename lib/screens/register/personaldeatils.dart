@@ -133,9 +133,9 @@ class _PersonaldeatilsState extends State<Personaldeatils> {
                       children: [
                         SvgPicture.asset(pick),
                         const Oneh(),
-                        const Heading12font700(
+                        Heading12font700(
                             heading:
-                                "These images will be shows in the profile\n(0/4)",
+                                "These images will be shows in the profile\n(${images.length}/4)",
                             color: blackcolor),
                         const Halfh(),
                         const Heading10font500(

@@ -46,20 +46,21 @@ Future<void> postwrkandeducationtosever(String jobrole, String educationlevel,
   buttonloading.value = false;
 }
 
-Future<void> uploadProfileAndDetails(
-    {required File profileImage,
-    required List<File> addonImages,
-    required String name,
-    required String preferdname,
-    required String sex,
-    required String region,
-    required String age,
-    required String height,
-    required String weight,
-    required String maritialstatus,
-    required String intrest,
-    required String bio,
-    required bool isfromeditpage}) async {
+Future<void> uploadProfileAndDetails({
+  File? profileImage,
+  List<File>? addonImages,
+  required String name,
+  required String preferdname,
+  required String sex,
+  required String region,
+  required String age,
+  required String height,
+  required String weight,
+  required String maritialstatus,
+  required String intrest,
+  required String bio,
+  required bool isfromeditpage,
+}) async {
   const String apiUrl = postprofiledatatoserver;
   buttonloading.value = true;
 
@@ -73,28 +74,32 @@ Future<void> uploadProfileAndDetails(
     // Add text fields
     request.fields['name'] = name;
     request.fields['preferred_name'] = preferdname;
-    request.fields['region'] = region.toString();
+    request.fields['region'] = region;
     request.fields['place'] = "";
     request.fields['sex'] = sex;
-    request.fields['age'] = age.toString();
-    request.fields['weight_kg'] = weight.toString();
-    request.fields['height_cm'] = height.toString();
-    request.fields['marital_status'] = maritialstatus.toString();
-    request.fields['interests'] = intrest.toString();
-    request.fields['about'] = aboutcontroller.text.toString();
+    request.fields['age'] = age;
+    request.fields['weight_kg'] = weight;
+    request.fields['height_cm'] = height;
+    request.fields['marital_status'] = maritialstatus;
+    request.fields['interests'] = intrest;
+    request.fields['about'] = bio;
 
-    // Add profile image
-    request.files.add(await http.MultipartFile.fromPath(
-      'profile_picture', // Key for the profile image
-      profileImage.path,
-    ));
-
-    // Add add-on images
-    for (int i = 0; i < addonImages.length; i++) {
+    // Add profile image if it exists
+    if (profileImage != null) {
       request.files.add(await http.MultipartFile.fromPath(
-        'additional_images', // Key for add-on images
-        addonImages[i].path,
+        'profile_picture', // Key for the profile image
+        profileImage.path,
       ));
+    }
+
+    // Add add-on images if they exist
+    if (addonImages != null && addonImages.isNotEmpty) {
+      for (var addonImage in addonImages) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'additional_images', // Key for add-on images
+          addonImage.path,
+        ));
+      }
     }
 
     // Send the request
@@ -102,14 +107,13 @@ Future<void> uploadProfileAndDetails(
     var responseData = await http.Response.fromStream(response);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      // var responseData = await http.Response.fromStream(response);
-      if (isfromeditpage == true) {
+      // Navigate based on the page
+      if (isfromeditpage) {
         Get.to(() => const EditFamilydetails());
       } else {
         Get.to(() => const Familydetails());
       }
     } else {
-      var responseData = await http.Response.fromStream(response);
       var jsonResponse = json.decode(responseData.body);
       errortoastmsg(jsonResponse['messages'][0]['message']);
     }
@@ -177,10 +181,18 @@ bool isLoading = false;
 bool hasNextPage = true;
 int currentPage = 1;
 
-Future<void> fetchProfiles(int page) async {
-  // if (isLoading || !hasNextPage) return;
+Future<void> fetchProfiles(int page, {bool isReload = false}) async {
+  if (isLoading || (!hasNextPage && !isReload)) return;
+
+  if (isReload) {
+    // Reset the list and pagination flags for reload
+    datingprofilelist.clear();
+    currentPage = 1;
+    hasNextPage = true;
+  }
+
   dataloading.value = true;
-  isLoading = true; // Set loading state
+  isLoading = true;
 
   try {
     final response = await http.post(
@@ -198,24 +210,22 @@ Future<void> fetchProfiles(int page) async {
       // Access results directly from the response
       final List fetchedProfiles = data['results'] ?? [];
 
-      // Update main list and pagination flags
-      datingprofilelist.addAll(fetchedProfiles);
-      hasNextPage = data['next'] != null; // Check if there is a next page
-      currentPage++;
-      dataloading.value = false;
+      if (fetchedProfiles.isNotEmpty) {
+        datingprofilelist.addAll(fetchedProfiles);
+        hasNextPage = data['next'] != null; // Check if there is a next page
+        currentPage++;
+      } else {
+        hasNextPage = false; // No more pages
+      }
     } else {
-      dataloading.value = false;
       throw Exception("Failed to fetch profiles");
     }
   } catch (e) {
     print("Error: $e");
-    dataloading.value = false;
   } finally {
     dataloading.value = false;
-    isLoading = false; // Reset loading state
+    isLoading = false;
   }
-
-  // print(dataloading.value);
 }
 
 Future<void> submitprofiletoserver() async {
@@ -396,4 +406,56 @@ Future<void> deleteImage(
   } catch (e) {
     print('Error deleting image: $e');
   }
+}
+
+Future<void> fetchmypersonalDetails() async {
+  dataloading.value = true;
+  isLoading = true; // Set loading state
+
+  try {
+    final response = await http.get(
+      Uri.parse(personaldetailsurl),
+      headers: {
+        'Authorization': 'Bearer $bearertoken',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      personalprofilelist.value = data;
+    } else {
+      dataloading.value = false;
+    }
+  } catch (e) {
+    print("Error: $e");
+  } finally {}
+
+  // print(dataloading.value);
+}
+
+Future<void> fetchmyworkDetails() async {
+  dataloading.value = true;
+  isLoading = true; // Set loading state
+
+  try {
+    final response = await http.get(
+      Uri.parse(postworkandeducationurl),
+      headers: {
+        'Authorization': 'Bearer $bearertoken',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      personalworklist.value = data;
+    } else {
+      dataloading.value = false;
+    }
+  } catch (e) {
+    print("Error: $e");
+  } finally {}
+
+  // print(dataloading.value);
 }

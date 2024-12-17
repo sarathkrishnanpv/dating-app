@@ -76,9 +76,14 @@ class _DatingListState extends State<DatingList> {
               Obx(() => Row(
                     children: [
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          datingprofilelist.clear();
                           datingindex.value = 0;
-                          fetchProfiles(1);
+                          fetchProfiles(1, isReload: true);
+                          // Future.delayed(const Duration(milliseconds: 1000))
+                          //     .then((_) {
+
+                          // });
                         },
                         child: SlideInLeft(
                           from: 10,

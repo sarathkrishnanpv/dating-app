@@ -18,6 +18,23 @@ class EditWorkDetails extends StatefulWidget {
 class _EditWorkDetailsState extends State<EditWorkDetails> {
   final _formKey = GlobalKey<FormState>();
   @override
+  void initState() {
+    super.initState();
+    jobrolecontroller.text =
+        personalworklist['work_and_education'][0]['job_role'];
+    collegenamecontroller.text =
+        personalworklist['work_and_education'][0]['college'];
+    educationindex.value = personalworklist['work_and_education'][0]
+                ['education_level'] ==
+            "Master’s"
+        ? 0
+        : personalworklist['work_and_education'][0]['education_level'] ==
+                "Bachelor's"
+            ? 1
+            : 2;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;

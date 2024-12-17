@@ -34,6 +34,8 @@ RxString? smokinghabit = RxString("");
 RxList datingprofilelist = [].obs;
 RxMap myprofiledata = {}.obs;
 RxMap intrestedlist = {}.obs;
+RxMap personalprofilelist = {}.obs;
+RxMap personalworklist = {}.obs;
 RxString selectedplaceinintrest = ''.obs;
 final List<String> drinking = ["Regular", "Ocassionally", "Never"];
 final List<String> smoking = ["Regular", "Ocassionally", "Never"];
@@ -55,6 +57,56 @@ List<String> districtsInKerala = [
   "Wayanad",
 ];
 List<String> placesInUK = [
+  // England
+  "London",
+  "Birmingham",
+  "Manchester",
+  "Liverpool",
+  "Leeds",
+  "Sheffield",
+  "Bristol",
+  "Newcastle",
+  "Nottingham",
+  "Southampton",
+
+  // Scotland
+  "Edinburgh",
+  "Glasgow",
+  "Aberdeen",
+  "Dundee",
+  "Inverness",
+  "Stirling",
+
+  // Wales
+  "Cardiff",
+  "Swansea",
+  "Newport",
+  "Bangor",
+  "Wrexham",
+
+  // Northern Ireland
+  "Belfast",
+  "Derry",
+  "Lisburn",
+  "Newry",
+  "Bangor (Northern Ireland)",
+];
+
+List<String> combinedplaces = [
+  "Alappuzha",
+  "Ernakulam",
+  "Idukki",
+  "Kannur",
+  "Kasaragod",
+  "Kollam",
+  "Kottayam",
+  "Kozhikode",
+  "Malappuram",
+  "Palakkad",
+  "Pathanamthitta",
+  "Thiruvananthapuram",
+  "Thrissur",
+  "Wayanad",
   // England
   "London",
   "Birmingham",

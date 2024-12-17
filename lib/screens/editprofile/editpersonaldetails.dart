@@ -37,6 +37,10 @@ class _EditPersonaldeatilsState extends State<EditPersonaldeatils> {
     selectedRegion!.value = myprofiledata['region'];
     maritialstatusselected!.value = myprofiledata['marital_status'];
     intrestselected!.value = myprofiledata['interests'][0];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fetchmypersonalDetails();
+      fetchmyworkDetails();
+    });
   }
 
   @override
@@ -382,12 +386,7 @@ class _EditPersonaldeatilsState extends State<EditPersonaldeatils> {
                 const Threeh(),
                 MainButton(
                     onpressed: () {
-                      if (selectedImage == null ||
-                          selectedImage!.path.isEmpty) {
-                        errortoastmsg("Upload a valid profile image");
-                      } else if (images.isEmpty) {
-                        errortoastmsg("Select at least one image");
-                      } else if (selectedsex!.value.isEmpty) {
+                      if (selectedsex!.value.isEmpty) {
                         errortoastmsg("Choose Your Gender");
                       } else if (maritialstatusselected!.value.isEmpty) {
                         errortoastmsg("Choose Your Marital Status");
@@ -399,7 +398,7 @@ class _EditPersonaldeatilsState extends State<EditPersonaldeatils> {
                         if (_formKey.currentState!.validate()) {
                           uploadProfileAndDetails(
                               addonImages: images,
-                              profileImage: selectedImage!,
+                              profileImage: selectedImage,
                               name: namecontroller.text.trim(),
                               age: agecontroller.text.trim(),
                               sex: selectedsex!.value,
