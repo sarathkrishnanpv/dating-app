@@ -10,4 +10,4 @@ const deleteimage = "$baseurl/api/delete-additional-image";
 const baseurl = "https://matrimonyproject.pythonanywhere.com";
 
 const bearertoken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxODE5NTU4ODQ1LCJpYXQiOjE3MzMxNTg4NDUsImp0aSI6IjUwZDFkZWQ5NjVlYjRmMzI5ZmZlZjE1M2Q5NDBmN2ZmIiwidXNlcl9pZCI6Mn0.duw3nMnqf4KYQi12J8K9ZvZzZpDJh_08mQtyd6h6l-A";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM3MzA3MzI0LCJpYXQiOjE3MzQ3MTUzMjQsImp0aSI6IjZlZDg2YTdmNjg4YTRkZDFhZTUzYzNhYTE1Y2RmMjYxIiwidXNlcl9pZCI6NH0.4TrJl0TgZI-9Ae-BSHDF2dbQeHwaqntzdmYMVL8SnpU";

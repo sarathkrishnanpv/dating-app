@@ -14,6 +14,8 @@ class _CustomDropdownState extends State<CustomDropdown> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -22,33 +24,37 @@ class _CustomDropdownState extends State<CustomDropdown> {
         borderRadius: BorderRadius.circular(4),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: DropdownButton<String>(
-        value: dropdownValue, // Can be null initially
-        hint: const Text(
-          'Select a location', // Placeholder text
-          style: TextStyle(color: Colors.grey),
-        ),
-        onChanged: (String? value) {
-          if (value != null) {
-            setState(() {
-              dropdownValue = value;
-            });
-            if (widget.onChanged != null) {
-              widget.onChanged!(value); // Trigger the callback
+      child: ButtonTheme(
+        alignedDropdown: true,
+        child: DropdownButton<String>(
+          menuMaxHeight: height * .4,
+          value: dropdownValue, // Can be null initially
+          hint: const Text(
+            'Select a location', // Placeholder text
+            style: TextStyle(color: Colors.grey),
+          ),
+          onChanged: (String? value) {
+            if (value != null) {
+              setState(() {
+                dropdownValue = value;
+              });
+              if (widget.onChanged != null) {
+                widget.onChanged!(value); // Trigger the callback
+              }
             }
-          }
-        },
-        underline: const SizedBox(),
-        isExpanded: true,
-        style: const TextStyle(color: Colors.black),
-        dropdownColor: Colors.white,
-        icon: const Icon(Icons.keyboard_arrow_down, color: Colors.black),
-        items: widget.placelist.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
+          },
+          underline: const SizedBox(),
+          isExpanded: true,
+          style: const TextStyle(color: Colors.black),
+          dropdownColor: Colors.white,
+          icon: const Icon(Icons.keyboard_arrow_down, color: Colors.black),
+          items: widget.placelist.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
@@ -84,6 +90,8 @@ class _SelectionDropDownState extends State<SelectionDropDown> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -92,35 +100,39 @@ class _SelectionDropDownState extends State<SelectionDropDown> {
         borderRadius: BorderRadius.circular(4),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: DropdownButton<String>(
-        value: dropdownValue,
-        hint: widget.hint != null
-            ? Text(
-                widget.hint!,
-                style: const TextStyle(color: Colors.grey),
-              )
-            : null, // Show hint if no value selected
-        onChanged: (String? value) {
-          if (value != null) {
-            setState(() {
-              dropdownValue = value;
-            });
-            if (widget.onChanged != null) {
-              widget.onChanged!(value); // Trigger the callback
+      child: ButtonTheme(
+        alignedDropdown: true,
+        child: DropdownButton<String>(
+          menuMaxHeight: height * .4,
+          value: dropdownValue,
+          hint: widget.hint != null
+              ? Text(
+                  widget.hint!,
+                  style: const TextStyle(color: Colors.grey),
+                )
+              : null, // Show hint if no value selected
+          onChanged: (String? value) {
+            if (value != null) {
+              setState(() {
+                dropdownValue = value;
+              });
+              if (widget.onChanged != null) {
+                widget.onChanged!(value); // Trigger the callback
+              }
             }
-          }
-        },
-        underline: const SizedBox(),
-        isExpanded: true,
-        style: const TextStyle(color: Colors.black),
-        dropdownColor: Colors.white,
-        icon: const Icon(Icons.keyboard_arrow_down, color: Colors.black),
-        items: widget.options.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
+          },
+          underline: const SizedBox(),
+          isExpanded: true,
+          style: const TextStyle(color: Colors.black),
+          dropdownColor: Colors.white,
+          icon: const Icon(Icons.keyboard_arrow_down, color: Colors.black),
+          items: widget.options.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+        ),
       ),
     );
   }

@@ -74,27 +74,16 @@ class _FamilydetailsState extends State<Familydetails> {
               const Heading12font700(
                   heading: "Choose Sub Region", color: blackcolor),
               const Oneh(),
-              Obx(() => selectedRegion!.value == "UK"
-                  ? SelectionDropDown(
-                      options: placesInUK,
-                      hint: "Select Your Sub Region",
-                      initialValue: selectedSubRegion!.value.isNotEmpty == true
-                          ? selectedSubRegion!.value
-                          : null,
-                      onChanged: (String value) {
-                        selectedSubRegion!.value = value;
-                      },
-                    )
-                  : SelectionDropDown(
-                      options: districtsInKerala,
-                      initialValue: selectedSubRegion!.value.isNotEmpty == true
-                          ? selectedSubRegion!.value
-                          : null,
-                      hint: "Select Your Sub Region",
-                      onChanged: (String value) {
-                        selectedSubRegion!.value = value;
-                      },
-                    )),
+              SelectionDropDown(
+                options: placesInUKandIndia,
+                hint: "Select Your Sub Region",
+                initialValue: selectedSubRegion!.value.isNotEmpty == true
+                    ? selectedSubRegion!.value
+                    : null,
+                onChanged: (String value) {
+                  selectedSubRegion!.value = value;
+                },
+              ),
               const Oneh(),
               const Row(
                 children: [

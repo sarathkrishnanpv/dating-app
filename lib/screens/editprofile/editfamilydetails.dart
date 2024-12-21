@@ -85,7 +85,7 @@ class _EditFamilydetailsState extends State<EditFamilydetails> {
                   heading: "Choose Sub Region", color: blackcolor),
               const Oneh(),
               SelectionDropDown(
-                options: combinedplaces,
+                options: placesInUKandIndia,
                 initialValue: selectedSubRegion!.value.isNotEmpty == true
                     ? selectedSubRegion!.value
                     : null,

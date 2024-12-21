@@ -1,6 +1,6 @@
 import 'package:datingapp/screens/e-com/mainscreen/homepage.dart';
+import 'package:datingapp/screens/hometab/profilecheck.dart';
 import 'package:datingapp/screens/mainscreens/datinglist.dart';
-import 'package:datingapp/screens/register/walkthrough.dart';
 import 'package:datingapp/utils/colors.dart';
 import 'package:datingapp/utils/controller.dart';
 import 'package:datingapp/utils/reusedtext.dart';
@@ -18,6 +18,7 @@ class Hometab extends StatefulWidget {
 
 class _HometabState extends State<Hometab> {
   @override
+  @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
@@ -30,7 +31,7 @@ class _HometabState extends State<Hometab> {
                     ? const DatingList()
                     : tabindex.value == 4
                         ? const HomePage()
-                        : const WalkThrough(),
+                        : const ProfileCheck(),
               )),
           Obx(() => Container(
                 width: width,

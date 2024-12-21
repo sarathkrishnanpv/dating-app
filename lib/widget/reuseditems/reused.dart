@@ -1,7 +1,6 @@
 import 'package:datingapp/utils/colors.dart';
 import 'package:datingapp/utils/reusedtext.dart';
 import 'package:flutter/material.dart';
-import 'package:like_button/like_button.dart';
 
 class ChatcountBox extends StatelessWidget {
   const ChatcountBox({super.key});
@@ -43,8 +42,6 @@ class Editdetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

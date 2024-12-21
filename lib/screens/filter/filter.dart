@@ -167,9 +167,7 @@ class FilterScreen extends StatelessWidget {
                               color: blackcolor),
                           const Oneh(),
                           CustomDropdown(
-                            placelist: myprofiledata['region'] == "UK"
-                                ? placesInUK
-                                : districtsInKerala,
+                            placelist: placesInUKandIndia,
                             onChanged: (String value) {
                               selectedplaceinintrest.value = value;
                             },

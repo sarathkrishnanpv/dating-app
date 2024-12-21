@@ -6,6 +6,7 @@ import 'package:datingapp/screens/hometab/hometab.dart';
 import 'package:datingapp/screens/register/familydetails.dart';
 import 'package:datingapp/screens/register/postprofile.dart';
 import 'package:datingapp/screens/register/workdetails.dart';
+import 'package:datingapp/screens/splashscreen/splashscreen.dart';
 import 'package:datingapp/service/apiurls.dart';
 import 'package:datingapp/utils/controller.dart';
 import 'package:datingapp/utils/ecom-widget/toast.dart';
@@ -242,7 +243,7 @@ Future<void> submitprofiletoserver() async {
 
   if (response.statusCode == 200 || response.statusCode == 201) {
     tabindex.value = 3;
-    Get.to(() => const Hometab());
+    Get.to(() => const Splashscreen());
   } else {
     var responseData = json.decode(response.body);
     errortoastmsg(responseData['messages'][0]['message']);
@@ -251,6 +252,7 @@ Future<void> submitprofiletoserver() async {
 }
 
 fetchMyProfile() async {
+  dataloading.value = true;
   try {
     final response = await http.get(
       Uri.parse(postprofiledatatoserver),
@@ -267,7 +269,9 @@ fetchMyProfile() async {
       errortoastmsg("Failed to fetch profile");
       return null;
     }
+    dataloading.value = false;
   } catch (e) {
+    dataloading.value = false;
     return null;
   }
 }
